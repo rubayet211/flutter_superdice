@@ -59,7 +59,7 @@ class _StartScreenState extends State<StartScreen> {
             ),
             MyButton(
               text: "Start",
-              callback: () => gameOn,
+              callback: gameOn,
               color: Colors.white,
               weight: FontWeight.bold,
               fontSize: 20,

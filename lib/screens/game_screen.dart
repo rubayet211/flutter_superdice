@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
 
-class GameScreen extends StatelessWidget {
-  const GameScreen({super.key});
+class GameScreen extends StatefulWidget {
+  final ValueNotifier<bool> noPlayNotifier;
+  const GameScreen(this.noPlayNotifier, {super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  void gameOff() {
+    setState(() {
+      widget.noPlayNotifier.value = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("SuperRoll"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: gameOff,
+            icon: Icon(
+              Icons.exit_to_app,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

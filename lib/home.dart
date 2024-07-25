@@ -12,7 +12,9 @@ class Home extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: noPlayNotifier,
       builder: (context, noPlay, child) {
-        return noPlay ? StartScreen(noPlayNotifier) : GameScreen();
+        return noPlay
+            ? StartScreen(noPlayNotifier)
+            : GameScreen(noPlayNotifier);
       },
     );
   }

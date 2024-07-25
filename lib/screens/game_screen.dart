@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class _GameScreenState extends State<GameScreen> {
   int index1 = 0;
   int index2 = 0;
   final random = Random.secure();
+  Timer? timer;
+  bool showDiceSum = false;
 
   void gameOff() {
     setState(() {
@@ -31,7 +34,35 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void rollDice() {}
+  void rollDice() {
+    const duration =
+        Duration(milliseconds: 100); // Update interval for the looping effect
+    const totalDuration =
+        Duration(seconds: 2); // Total duration of the looping effect
+
+    timer?.cancel();
+    timer = Timer.periodic(duration, (Timer t) {
+      setState(() {
+        index1 = random.nextInt(6);
+        index2 = random.nextInt(6);
+      });
+    });
+
+    Future.delayed(totalDuration, () {
+      timer?.cancel();
+      setState(() {
+        index1 = random.nextInt(6);
+        index2 = random.nextInt(6);
+        showDiceSum = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +86,7 @@ class _GameScreenState extends State<GameScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/dice-six-faces-one.png",
+                diceFaces[index1],
                 height: 100,
                 width: 100,
               ),
@@ -63,7 +94,7 @@ class _GameScreenState extends State<GameScreen> {
                 width: 20,
               ),
               Image.asset(
-                "assets/dice-six-faces-one.png",
+                diceFaces[index2],
                 height: 100,
                 width: 100,
               ),
@@ -72,16 +103,20 @@ class _GameScreenState extends State<GameScreen> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            "Dice Sum",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+          if (showDiceSum)
+            Text(
+              "Dice Sum",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+          SizedBox(
+            height: 20,
           ),
           MyButton(
             text: "Roll",
-            callback: () {},
+            callback: rollDice,
             color: Colors.red,
             weight: FontWeight.bold,
             fontSize: 20,

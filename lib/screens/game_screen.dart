@@ -28,6 +28,7 @@ class _GameScreenState extends State<GameScreen> {
   Timer? timer;
   bool showDiceSum = false;
   int diceSum = 0;
+  int target = 12;
 
   void gameOff() {
     setState(() {
@@ -116,24 +117,52 @@ class _GameScreenState extends State<GameScreen> {
           SizedBox(
             height: 20,
           ),
-          if (diceSum == 11)
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: 20,
-              ),
-              child: Text(
-                "Congratulations, You are the Winner!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: 20,
             ),
-          diceSum != 11
+            child: Column(
+              children: [
+                if (diceSum == 11)
+                  Text(
+                    "Congratulations, You are the Winner!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                  ),
+                if (diceSum == 12)
+                  Text(
+                    "Sorry, you are the loser!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                if (diceSum <= target &&
+                    diceSum != 0 &&
+                    target != 1 &&
+                    diceSum != 11 &&
+                    diceSum != 12)
+                  Text(
+                    "Try Again",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          diceSum != 11 || diceSum == 0
               ? MyButton(
                   text: "Roll",
                   callback: rollDice,

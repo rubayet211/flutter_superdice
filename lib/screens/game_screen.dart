@@ -29,6 +29,7 @@ class _GameScreenState extends State<GameScreen> {
   bool showDiceSum = false;
   int diceSum = 0;
   int target = 12;
+  bool showTarget = false;
 
   void gameOff() {
     setState(() {
@@ -57,6 +58,8 @@ class _GameScreenState extends State<GameScreen> {
         index2 = random.nextInt(6);
         diceSum = index1 + index2 + 2;
         showDiceSum = true;
+        showTarget = true;
+        target = target - diceSum - 1;
       });
     });
   }
@@ -109,6 +112,17 @@ class _GameScreenState extends State<GameScreen> {
           if (showDiceSum)
             Text(
               "Dice Sum: " + diceSum.toString(),
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          SizedBox(
+            height: 20,
+          ),
+          if (showTarget && target != 1)
+            Text(
+              "Target to win: " + target.toString(),
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,

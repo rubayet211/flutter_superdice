@@ -27,6 +27,7 @@ class _GameScreenState extends State<GameScreen> {
   final random = Random.secure();
   Timer? timer;
   bool showDiceSum = false;
+  int diceSum = 0;
 
   void gameOff() {
     setState(() {
@@ -38,7 +39,7 @@ class _GameScreenState extends State<GameScreen> {
     const duration =
         Duration(milliseconds: 100); // Update interval for the looping effect
     const totalDuration =
-        Duration(seconds: 2); // Total duration of the looping effect
+        Duration(seconds: 1); // Total duration of the looping effect
 
     timer?.cancel();
     timer = Timer.periodic(duration, (Timer t) {
@@ -53,6 +54,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         index1 = random.nextInt(6);
         index2 = random.nextInt(6);
+        diceSum = index1 + index2 + 2;
         showDiceSum = true;
       });
     });
@@ -105,7 +107,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
           if (showDiceSum)
             Text(
-              "Dice Sum",
+              "Dice Sum: " + diceSum.toString(),
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -114,13 +116,38 @@ class _GameScreenState extends State<GameScreen> {
           SizedBox(
             height: 20,
           ),
-          MyButton(
-            text: "Roll",
-            callback: rollDice,
-            color: Colors.red,
-            weight: FontWeight.bold,
-            fontSize: 20,
-          ),
+          if (diceSum == 11)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: 20,
+              ),
+              child: Text(
+                "Congratulations, You are the Winner!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+            ),
+          diceSum != 11
+              ? MyButton(
+                  text: "Roll",
+                  callback: rollDice,
+                  color: Colors.red,
+                  weight: FontWeight.bold,
+                  fontSize: 20,
+                )
+              : MyButton(
+                  text: "Reset",
+                  callback: gameOff,
+                  color: Colors.red,
+                  weight: FontWeight.bold,
+                  fontSize: 20,
+                ),
         ],
       ),
     );

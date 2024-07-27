@@ -115,6 +115,9 @@ class _GameScreenState extends State<GameScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Flexible(
+            child: Container(),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -183,7 +186,7 @@ class _GameScreenState extends State<GameScreen> {
               callback: rollDice,
               color: Colors.red,
               weight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 30,
             ),
           if (gameStatus == "You win!" || gameStatus == "You lose!")
             MyButton(
@@ -191,8 +194,11 @@ class _GameScreenState extends State<GameScreen> {
               callback: resetGame,
               color: Colors.red,
               weight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 30,
             ),
+          Flexible(
+            child: Container(),
+          ),
         ],
       ),
     );

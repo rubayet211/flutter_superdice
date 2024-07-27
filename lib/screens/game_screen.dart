@@ -86,7 +86,7 @@ class _GameScreenState extends State<GameScreen> {
             gameStatus = "You lose!";
           } else {
             target = target! - diceSum;
-            if (target! <= 1) {
+            if (target! == 1) {
               gameStatus = "You lose!";
             } else {
               gameStatus = "Roll again!";
@@ -101,12 +101,12 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SuperRoll"),
+        title: const Text("SuperRoll"),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: gameOff,
-            icon: Icon(
+            icon: const Icon(
               Icons.exit_to_app,
             ),
           ),
@@ -126,7 +126,7 @@ class _GameScreenState extends State<GameScreen> {
                 height: 100,
                 width: 100,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Image.asset(
@@ -136,18 +136,18 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           if (showDiceSum)
             Text(
               "Dice Sum: $diceSum",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           if (target != null &&
@@ -155,13 +155,13 @@ class _GameScreenState extends State<GameScreen> {
               gameStatus != "You lose!")
             Text(
               "Target: $target",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
               ),
             ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           if (gameStatus.isNotEmpty)
@@ -177,7 +177,7 @@ class _GameScreenState extends State<GameScreen> {
                         : Colors.black,
               ),
             ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           if (gameStatus != "You win!" && gameStatus != "You lose!")

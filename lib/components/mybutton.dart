@@ -21,7 +21,7 @@ class MyButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.all<Color>(Colors.black),
         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-          EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
         ),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

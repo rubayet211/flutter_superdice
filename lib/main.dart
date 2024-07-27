@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:super_roll/home.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

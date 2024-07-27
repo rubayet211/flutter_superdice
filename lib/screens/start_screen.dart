@@ -54,7 +54,7 @@ class _StartScreenState extends State<StartScreen> {
               height: 150,
               width: 300,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             MyButton(
@@ -64,7 +64,7 @@ class _StartScreenState extends State<StartScreen> {
               weight: FontWeight.bold,
               fontSize: 20,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             MyButton(
@@ -72,7 +72,7 @@ class _StartScreenState extends State<StartScreen> {
               callback: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => NyAlert(),
+                  builder: (BuildContext context) => const NyAlert(),
                 );
               },
               color: Colors.white,

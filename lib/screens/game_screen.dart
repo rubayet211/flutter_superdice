@@ -72,30 +72,29 @@ class _GameScreenState extends State<GameScreen> {
         if (firstRoll) {
           if (diceSum == 11) {
             gameStatus = "You win!";
-          } else if (diceSum == 12) {
+          } else if (diceSum == 10 || diceSum == 12) {
             gameStatus = "You lose!";
           } else {
             target = 11 - diceSum;
-            gameStatus = "Your target is $target";
+            gameStatus = "Roll again!";
             firstRoll = false;
           }
         } else {
           if (diceSum == target) {
             gameStatus = "You win!";
-          } else if (diceSum > target! || target == 1) {
+          } else if (diceSum > target!) {
             gameStatus = "You lose!";
           } else {
-            gameStatus = "Roll again!";
+            target = target! - diceSum;
+            if (target! <= 1) {
+              gameStatus = "You lose!";
+            } else {
+              gameStatus = "Roll again!";
+            }
           }
         }
       });
     });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -148,15 +147,29 @@ class _GameScreenState extends State<GameScreen> {
           SizedBox(
             height: 20,
           ),
+          if (target != null &&
+              gameStatus != "You win!" &&
+              gameStatus != "You lose!")
+            Text(
+              "Target: $target",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+          SizedBox(
+            height: 20,
+          ),
           if (gameStatus.isNotEmpty)
             Text(
               gameStatus,
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: gameStatus == "You win!"
+                color: gameStatus.contains("win")
                     ? Colors.green
-                    : gameStatus == "You lose!"
+                    : gameStatus.contains("lose")
                         ? Colors.red
                         : Colors.black,
               ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:super_roll/components/mybutton.dart';
 
@@ -28,8 +27,9 @@ class _GameScreenState extends State<GameScreen> {
   Timer? timer;
   bool showDiceSum = false;
   int diceSum = 0;
-  int target = 12;
-  bool showTarget = false;
+  int? target;
+  String gameStatus = "";
+  bool firstRoll = true;
 
   void gameOff() {
     setState(() {
@@ -37,11 +37,21 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void resetGame() {
+    setState(() {
+      index1 = 0;
+      index2 = 0;
+      showDiceSum = false;
+      diceSum = 0;
+      target = null;
+      gameStatus = "";
+      firstRoll = true;
+    });
+  }
+
   void rollDice() {
-    const duration =
-        Duration(milliseconds: 100); // Update interval for the looping effect
-    const totalDuration =
-        Duration(seconds: 1); // Total duration of the looping effect
+    const duration = Duration(milliseconds: 100);
+    const totalDuration = Duration(seconds: 1);
 
     timer?.cancel();
     timer = Timer.periodic(duration, (Timer t) {
@@ -58,8 +68,26 @@ class _GameScreenState extends State<GameScreen> {
         index2 = random.nextInt(6);
         diceSum = index1 + index2 + 2;
         showDiceSum = true;
-        showTarget = true;
-        target = target - diceSum - 1;
+
+        if (firstRoll) {
+          if (diceSum == 11) {
+            gameStatus = "You win!";
+          } else if (diceSum == 12) {
+            gameStatus = "You lose!";
+          } else {
+            target = 11 - diceSum;
+            gameStatus = "Your target is $target";
+            firstRoll = false;
+          }
+        } else {
+          if (diceSum == target) {
+            gameStatus = "You win!";
+          } else if (diceSum > target! || target == 1) {
+            gameStatus = "You lose!";
+          } else {
+            gameStatus = "Roll again!";
+          }
+        }
       });
     });
   }
@@ -111,7 +139,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
           if (showDiceSum)
             Text(
-              "Dice Sum: " + diceSum.toString(),
+              "Dice Sum: $diceSum",
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -120,77 +148,38 @@ class _GameScreenState extends State<GameScreen> {
           SizedBox(
             height: 20,
           ),
-          if (showTarget && target != 1)
+          if (gameStatus.isNotEmpty)
             Text(
-              "Target to win: " + target.toString(),
+              gameStatus,
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
+                color: gameStatus == "You win!"
+                    ? Colors.green
+                    : gameStatus == "You lose!"
+                        ? Colors.red
+                        : Colors.black,
               ),
             ),
           SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-              bottom: 20,
+          if (gameStatus != "You win!" && gameStatus != "You lose!")
+            MyButton(
+              text: "Roll",
+              callback: rollDice,
+              color: Colors.red,
+              weight: FontWeight.bold,
+              fontSize: 20,
             ),
-            child: Column(
-              children: [
-                if (diceSum == 11)
-                  Text(
-                    "Congratulations, You are the Winner!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                if (diceSum == 12)
-                  Text(
-                    "Sorry, you are the loser!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    ),
-                  ),
-                if (diceSum <= target &&
-                    diceSum != 0 &&
-                    target != 1 &&
-                    diceSum != 11 &&
-                    diceSum != 12)
-                  Text(
-                    "Try Again",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-              ],
+          if (gameStatus == "You win!" || gameStatus == "You lose!")
+            MyButton(
+              text: "Reset",
+              callback: resetGame,
+              color: Colors.red,
+              weight: FontWeight.bold,
+              fontSize: 20,
             ),
-          ),
-          diceSum != 11 || diceSum == 0
-              ? MyButton(
-                  text: "Roll",
-                  callback: rollDice,
-                  color: Colors.red,
-                  weight: FontWeight.bold,
-                  fontSize: 20,
-                )
-              : MyButton(
-                  text: "Reset",
-                  callback: gameOff,
-                  color: Colors.red,
-                  weight: FontWeight.bold,
-                  fontSize: 20,
-                ),
         ],
       ),
     );
